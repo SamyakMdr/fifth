@@ -1,0 +1,62 @@
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL
+);
+
+CREATE TABLE `destinations` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `nights` int(11) NOT NULL,
+  `days` int(11) NOT NULL,
+  `cost` decimal(10,2) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `highlights` text DEFAULT NULL,
+  `itinerary` text DEFAULT NULL,
+  `rating` float DEFAULT 0
+);
+
+
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `subject` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `sent_at` timestamp NOT NULL DEFAULT current_timestamp()
+);
+
+CREATE TABLE `reservations` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `date_of_travel` date NOT NULL,
+  `destination_id` int(11) NOT NULL
+);
+
+
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`);
+
+
+ALTER TABLE `destinations`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`);
+
+
+ALTER TABLE `reservations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `destination_id` (`destination_id`);
+
+ALTER TABLE `reservations`
+  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`destination_id`) REFERENCES `destinations` (`id`);
+COMMIT;
+
+
+INSERT INTO admin (username, password)
+VALUES ('admin', SHA1('admin123'));
